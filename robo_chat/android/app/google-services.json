@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1091538090933",
+    "firebase_url": "https://robo-chat-54317.firebaseio.com",
+    "project_id": "robo-chat-54317",
+    "storage_bucket": "robo-chat-54317.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091538090933:android:c0d7d5542df82f53de77fc",
+        "android_client_info": {
+          "package_name": "com.example.robo_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091538090933-q9rk5d45rotvae5fe3pg6qq58uh7dtmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv16iMu4BkK4g6qc9idaYbx2ZeK54S-04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091538090933-q9rk5d45rotvae5fe3pg6qq58uh7dtmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

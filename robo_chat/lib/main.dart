@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:robo_chat/SignUp.dart';
+import 'Home.dart';
 import 'LogIn.dart';
 
 void main() {
@@ -14,24 +16,26 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      initialRoute: MyHomePage.id,
+      initialRoute: MyStartPage.id,
       routes: {
-        MyHomePage.id: (context) => MyHomePage(),
-        LogIn.id :(context)=>LogIn(),
+        MyStartPage.id: (context) => MyStartPage(),
+        LogIn.id: (context) => LogIn(),
+        SignUp.id: (context) => SignUp(),
+        Home.id:(context) =>Home()
       },
-      home: MyHomePage(),
+      home: MyStartPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyStartPage extends StatefulWidget {
   static const String id = "HOMESCREEN";
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyStartPageState createState() => _MyStartPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyStartPageState extends State<MyStartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         CustomButton(
           text: "Register",
-          callback: () {},
+          callback: () {
+            Navigator.of(context).pushNamed(SignUp.id);
+          },
         ),
         CustomButton(
           text: "Log In",

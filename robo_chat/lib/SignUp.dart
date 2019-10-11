@@ -1,21 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:robo_chat/Home.dart';
+import 'LogIn.dart';
 import 'main.dart';
 
-class LogIn extends StatefulWidget {
-  static const String id = "LOGIN";
+class SignUp extends StatefulWidget {
+  static const String id = "SIGNUP";
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _LogInState();
+    return _SignUpState();
   }
 }
 
-class _LogInState extends State<LogIn> {
+class _SignUpState extends State<SignUp> {
   String email = '';
   String password = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +72,9 @@ class _LogInState extends State<LogIn> {
             height: 40.0,
           ),
           CustomButton(
-            text: "Log In",
+            text: "Sign Up",
             callback: () {
-              loginUser(email: email, password: password);
+              _SignUpUser(email: email, password: password);
             },
           )
         ],
@@ -81,19 +82,12 @@ class _LogInState extends State<LogIn> {
     );
   }
 
-  Future<FirebaseUser> loginUser({String email, String password}) async {
-    try {
-      var result = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      // since something changed, let's notify the listeners...
-      Navigator.of(context).pushNamed(Home.id);
-
-      return result;
-    } catch (e) {
-      // throw the Firebase AuthException that we caught
-
-      throw new AuthException(e.code, e.message);
-
-    }
+  Future<FirebaseUser> _SignUpUser({String email, String password}) async {
+    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ));
+    Navigator.of(context).pushNamed(LogIn.id);
+    return user;
   }
 }

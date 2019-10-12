@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:robo_chat/Chats.dart';
 import 'LogIn.dart';
 import 'CircualrImage.dart';
+import 'Search.dart';
 import 'main.dart';
 
 class Home extends StatefulWidget {
@@ -20,6 +22,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     someMethod();
+
     // TODO: implement build
     return Scaffold(
       body: DefaultTabController(
@@ -30,7 +33,7 @@ class _HomeState extends State<Home> {
               tabs: [
                 Tab(icon: Icon(Icons.person_pin)),
                 Tab(icon: Icon(Icons.message)),
-                Tab(icon: Icon(Icons.settings)),
+                Tab(icon: Icon(Icons.search)),
               ],
             ),
             title: Text('Home'),
@@ -44,13 +47,16 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.only(top: 60),
                   ),
                   Container(
-                    child: Text(Email),
+                    child: Text(
+                      Email,
+                      style: TextStyle(fontSize: 30),
+                    ),
                     margin: EdgeInsets.only(top: 20),
                   )
                 ],
               ),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
+              Chats(),
+              Search(),
             ],
           ),
         ),
@@ -60,6 +66,8 @@ class _HomeState extends State<Home> {
 
   someMethod() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    Email = user.email;
+    setState(() {
+      Email = user.email;
+    });
   }
 }

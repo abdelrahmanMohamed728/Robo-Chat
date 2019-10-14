@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'LogIn.dart';
 import 'CircualrImage.dart';
+import 'SearchUser.dart';
 import 'main.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -11,6 +13,10 @@ class Search extends StatefulWidget {
     return _SearchState();
   }
 }
+
+String searchText = '';
+final Reference = FirebaseDatabase.instance.reference();
+List<User> users = [];
 
 class _SearchState extends State<Search> {
   @override
@@ -22,21 +28,37 @@ class _SearchState extends State<Search> {
         Container(
           child: TextField(
             decoration: InputDecoration(
-              hintText: "Search for a User...",
+              hintText: "Search for a User by Email",
               prefixIcon: Icon(Icons.search),
               border: const OutlineInputBorder(),
             ),
+            onChanged: (text) {
+              users = [];
+              DatabaseReference dp = Reference.child('Users');
+              dp.once().then((DataSnapshot snapshot) {
+                Map<dynamic, dynamic> values = snapshot.value;
+                values.forEach((key, value) {
+                  setState(() {
+                    String email = value['Email'];
+                    if(email.contains(text))
+                    users.add(User(email: email, id: key.toString()));
+                  });
+                });
+              });
+            },
           ),
           margin: EdgeInsets.only(top: 10),
         ),
-        SizedBox(
-          width: 300,height: 320,child: ListView.builder(
+        Expanded(
+
+          child: ListView.builder(
               shrinkWrap: true,
-              itemCount: 12,
+              itemCount: users.length,
               itemBuilder: (context, i) {
                 return ListTile(
                   leading: Icon(Icons.person),
-                  title: Text('Person ' + (i + 1).toString()),
+                  title: Text(users[i].email),
+                  onTap: () {},
                 );
               }),
         )

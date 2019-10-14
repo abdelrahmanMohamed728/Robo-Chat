@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'LogIn.dart';
 import 'main.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SignUp extends StatefulWidget {
   static const String id = "SIGNUP";
@@ -17,6 +18,9 @@ class _SignUpState extends State<SignUp> {
   String email = '';
   String password = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Reference = FirebaseDatabase.instance.reference();
+
+  String id = 'test';
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +91,12 @@ class _SignUpState extends State<SignUp> {
       email: email,
       password: password,
     ));
+    id = user.uid;
+    Reference
+        .reference()
+        .child('Users')
+        .child(id)
+        .set(<String, String>{'Email': email});
     Navigator.of(context).pushNamed(LogIn.id);
     return user;
   }

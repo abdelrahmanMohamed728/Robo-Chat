@@ -23,8 +23,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   User user;
-  final Reference = FirebaseDatabase.instance.reference();
   String message = '';
+  final Reference = FirebaseDatabase.instance.reference();
+
   String curEmail = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   List<Widget> widgets = [];

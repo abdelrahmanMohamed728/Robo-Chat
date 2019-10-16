@@ -1,5 +1,9 @@
+import 'dart:collection';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:robo_chat/SearchUser.dart';
 import 'LogIn.dart';
 import 'CircualrImage.dart';
 import 'main.dart';
@@ -13,35 +17,68 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatsState extends State<Chats> {
+  final Reference = FirebaseDatabase.instance.reference();
+  String curEmail = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  List<String> users = [];
+  List<String> users2 = [];
+  @override
+  void initState() {
+    getUser();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: ListView.builder(
-          itemCount: 8,
-          itemBuilder: (context, i) {
-            return Card(
-                child: Container(
-              child: Row(
-                children: <Widget>[
-                  Image.network(
-                    'https://www.woolha.com/media/2019/06/buneary.jpg',
-                    width: 80,
-                    height: 100,
-                  ),
-                  Text(
-                    'Friend ' + (i + 1).toString(),
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text('11:11 PM')
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: <Widget>[
+          Container(
+            child: Center(
+              child: Text(
+                'Recent Chats',
+                style: TextStyle(fontSize: 20),
               ),
-              margin: EdgeInsets.only(top: 20),
-              height: 70,
-              width: 300,
-            ));
-          }),
+            ),
+            margin: EdgeInsets.only(top: 20),
+          ),
+          SizedBox(
+            height: 300,
+            child: ListView.builder(itemCount: users2.length,itemBuilder: (context, i) {
+              return ListTile(
+                leading: Icon(Icons.person), title: Text(users2[i]),);
+            }),
+          )
+        ],
+      ),
     );
+  }
+  getUser() async {
+    FirebaseUser user = await _auth.currentUser();
+    curEmail = user.email;
+    DatabaseReference dp = Reference.child('Messages');
+    dp
+      ..orderByChild('created_at').once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, value) {
+          setState(() {
+            String from = value['From'];
+            String to = value['To'];
+            if (from == curEmail) {
+              users.add(to);
+            }
+            if (to == curEmail) {
+              users.add(from);
+            }
+            users2 = users.toSet().toList();
+          });
+        });
+      });
+    //
+
   }
 }

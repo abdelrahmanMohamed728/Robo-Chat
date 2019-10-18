@@ -7,9 +7,10 @@ import 'CircualrImage.dart';
 import 'SearchUser.dart';
 import 'main.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:image_picker_modern/image_picker_modern.dart';
 class ChatScreen extends StatefulWidget {
   static const String id = "CHAT";
+
   final User user;
 
   const ChatScreen({Key key, this.user}) : super(key: key);
@@ -39,28 +40,29 @@ class _ChatScreenState extends State<ChatScreen> {
     getUser();
     _c = new TextEditingController();
     DatabaseReference dp = Reference.child('Messages');
-    dp
-      ..orderByChild('created_at').once().then((DataSnapshot snapshot) {
+    dp.orderByChild('date').once().then((DataSnapshot snapshot) {
         Map<dynamic, dynamic> values = snapshot.value;
         values.forEach((key, value) {
           setState(() {
             String from = value['From'];
             String to = value['To'];
             String msg = value['Message'];
+            String date = value['date'];
             String eUser = user.email;
             if (from == curEmail && eUser == to) {
               widgets.add(Message(
                 from: from,
                 text: msg,
                 me: true,
+                date: date,
               ));
-              print(msg);
             }
             if (from == eUser && curEmail == to) {
               widgets.add(Message(
                 from: from,
                 text: msg,
                 me: false,
+                date: date,
               ));
             }
           });
@@ -118,7 +120,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 .set(<String, String>{
                               'From': curEmail,
                               'To': user.email,
-                              "Message": message
+                              "Message": message,
+                              'date': DateTime.now().toIso8601String().toString(),
                             });
                           });
                           update();
@@ -133,7 +136,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 alignment: FractionalOffset.bottomCenter,
               ),
-
             )
           ],
         ));
@@ -147,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
   update() {
     widgets = [];
     DatabaseReference dp = Reference.child('Messages');
-    dp.once().then((DataSnapshot snapshot) {
+    dp..orderByChild('date').once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key, value) {
         setState(() {

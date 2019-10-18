@@ -1,23 +1,24 @@
-
 import 'package:flutter/material.dart';
+
 class Message extends StatelessWidget {
   final String from;
   final String text;
 
   final bool me;
+  final String date;
 
-  const Message({Key key, this.from, this.text, this.me}) : super(key: key);
+  const Message({Key key, this.from, this.text, this.me, this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment:
-        me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
-
           Material(
-            color: me ? Colors.grey : Colors.red,
+            color: me ? Colors.white : Colors.green,
             borderRadius: BorderRadius.circular(10.0),
             elevation: 6.0,
             child: Container(

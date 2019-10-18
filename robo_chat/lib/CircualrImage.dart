@@ -4,6 +4,7 @@ import 'LogIn.dart';
 import 'main.dart';
 
 class CircleImage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     double _size = 300.0;
